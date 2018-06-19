@@ -111,7 +111,7 @@ Capybara.javascript_driver = :selenium_chrome
 
 # 開発開始
 
-## Step6:タスクモデルの作成 
+## タスクモデルの作成 
 
 * 以下のコマンドでモデルを作成する
 
@@ -208,3 +208,19 @@ end
    (略)
 ```
   * `bundle exec rspec spec/models/`でテストが通過することを確認する
+
+## 画面遷移について考える
+
+* 画面遷移図は`plantuml`で書いてみる
+* VSCodeでplantuml環境を構築する
+  * `brew cask install java`でJavaをインストール
+  * VSCodeの拡張機能で`PlantUML`をインストール
+  * `brew install graphviz`でgraphivizをインストール
+  * 一応動いたが、遅いし、画面遷移図というより状態遷移図なのでやーめた
+* 代わりに`guiflow`というUI FLowsをテキストで描けるツールが良さげ。(マークダウンには入れられないが・・)
+
+## Controllerの作成 
+
+## Viewの作成
+
+
