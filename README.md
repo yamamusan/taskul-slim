@@ -288,3 +288,57 @@ end
 
 * 詳細画面に項目を追加(show.html.slim)
 
+```
+= form_for @task do |f|
+  .item
+    = f.label :title, class: "inline"
+    = @task.title
+  .item
+    = f.label :description, class: "inline"
+    = @task.description
+  .item
+    = f.label :priority, class: "inline"
+    = @task.priority
+  .item
+    = f.label :status, class: "inline"
+    = @task.status
+  .item
+    = f.label :due_date, class: "inline"
+    = @task.due_date
+```
+
+* 一覧画面に項目を追加(index.html.slim)
+
+```
+table
+  thead
+    tr
+      th Title
+      th Description
+      th Priority
+      th Status
+      th Due date
+      th
+      th
+      th
+
+  tbody
+    - @tasks.each do |task|
+      tr
+        td = task.title
+        td = task.description
+        td = task.priority
+        td = task.status
+        td = task.due_date
+        td = link_to 'Show', task
+        td = link_to 'Edit', edit_task_path(task)
+        td = link_to 'Destroy', task, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+
+= link_to 'New Task', new_task_path
+```
+
+## bootstarpを導入する
+
+

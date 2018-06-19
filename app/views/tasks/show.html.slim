@@ -1,13 +1,23 @@
+h1 Detail task
+
 p#notice = notice
 
-
 = form_for @task do |f|
-
-  = f.label :title, class: "inline"
-  = @task.title
-
-  = f.label :description, class: "inline"
-  = @task.description
+  .item
+    = f.label :title, class: "inline"
+    = @task.title
+  .item
+    = f.label :description, class: "inline"
+    = @task.description
+  .item
+    = f.label :priority, class: "inline"
+    = @task.priority
+  .item
+    = f.label :status, class: "inline"
+    = @task.status
+  .item
+    = f.label :due_date, class: "inline"
+    = @task.due_date
 
 
 => link_to 'Edit', edit_task_path(@task)

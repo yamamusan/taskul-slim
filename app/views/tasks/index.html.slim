@@ -3,6 +3,11 @@ h1 Listing tasks
 table
   thead
     tr
+      th = Task.human_attribute_name(:title)
+      th = Task.human_attribute_name(:description)
+      th = Task.human_attribute_name(:priority)
+      th = Task.human_attribute_name(:status)
+      th = Task.human_attribute_name(:due_date)
       th
       th
       th
@@ -10,6 +15,13 @@ table
   tbody
     - @tasks.each do |task|
       tr
+        td = task.title
+        td = task.description
+        td = task.priority
+        td = task.status
+        td = task.due_date
+        / TODO:以下のようにi18n対応したい
+        / td = link_to t(button.show), task
         td = link_to 'Show', task
         td = link_to 'Edit', edit_task_path(task)
         td = link_to 'Destroy', task, data: { confirm: 'Are you sure?' }, method: :delete
