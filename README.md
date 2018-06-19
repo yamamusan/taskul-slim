@@ -248,6 +248,43 @@ Rails.application.routes.draw do
 end
 ```
 
+## Controllerの修正
+
+* 以下のように、permitを追加.ついでにsearch_paramsも追加
+
+```
+def task_params
+  params.fetch(:task, {}).permit(:title, :description, :status, :priority, :due_date)
+end
+def search_params
+  params.permit(:title, :due_date, :description, statuses: [], priorities: [])
+end
+```
+
 ## Viewの作成
 
+* 登録、更新画面に項目を追加(_form.html.slim)
+
+```
+  .field
+    = f.label :title
+    = f.text_field :title
+  .field
+    = f.label :description
+    = f.text_area :description
+  .field
+    = f.label :priority
+    = f.select :priority, Task.priorities.keys.to_a
+  .field
+    = f.label :status
+    = f.select :status, Task.statuses.keys.to_a
+  .field
+    = f.label :due_date
+    = f.date_select :due_date
+
+  / コメント
+  .actions = f.submit
+```
+
+* 詳細画面に項目を追加(show.html.slim)
 

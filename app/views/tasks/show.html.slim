@@ -1,6 +1,15 @@
 p#notice = notice
 
 
+= form_for @task do |f|
+
+  = f.label :title, class: "inline"
+  = @task.title
+
+  = f.label :description, class: "inline"
+  = @task.description
+
+
 => link_to 'Edit', edit_task_path(@task)
 '|
 =< link_to 'Back', tasks_path
