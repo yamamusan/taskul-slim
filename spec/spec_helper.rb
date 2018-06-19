@@ -15,6 +15,9 @@
 # it.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+require 'factory_bot'
+require 'capybara'
+
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
@@ -45,23 +48,6 @@ RSpec.configure do |config|
   # inherited by the metadata hash of host groups and examples, rather than
   # triggering implicit auto-inclusion in groups with matching metadata.
   config.shared_context_metadata_behavior = :apply_to_host_groups
-
-  Dir.glob('spec/**/*steps.rb') { |f| load f, true }
-
-  # Capybara自体の設定、ここではどのドライバーを使うかを設定しています
-  Capybara.configure do |capybara_config|
-    capybara_config.default_driver = :selenium_chrome
-    capybara_config.default_max_wait_time = 10 # 一つのテストに10秒以上かかったらタイムアウトするように設定しています
-  end
-  # Capybaraに設定したドライバーの設定をします
-  Capybara.register_driver :selenium_chrome do |app|
-    options = Selenium::WebDriver::Chrome::Options.new
-    options.add_argument('headless') # ヘッドレスモードをonにするオプション
-    options.add_argument('--disable-gpu') # 暫定的に必要なフラグとのこと
-    Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
-  end
-
-  Capybara.javascript_driver = :selenium_chrome
 
   # The settings below are suggested to provide a good initial experience
   # with RSpec, but feel free to customize to your heart's content.
@@ -110,4 +96,28 @@ RSpec.configure do |config|
   #   # test failures related to randomization by passing the same `--seed` value
   #   # as the one that triggered the failure.
   #   Kernel.srand config.seed
+
+  Dir.glob('spec/**/*steps.rb') { |f| load f, true }
+
+  # ファクトリを簡単に呼び出せるよう、Factory Girl の構文をインクルードする
+  config.include FactoryBot::Syntax::Methods
+
+  # Capybara自体の設定、ここではどのドライバーを使うかを設定しています
+  Capybara.configure do |capybara_config|
+    capybara_config.default_driver = :selenium_chrome
+    capybara_config.default_max_wait_time = 10 # 一つのテストに10秒以上かかったらタイムアウトするように設定しています
+  end
+  # Capybaraに設定したドライバーの設定をします
+  Capybara.register_driver :selenium_chrome do |app|
+    options = Selenium::WebDriver::Chrome::Options.new
+    # options.add_argument('headless') # ヘッドレスモードをonにするオプション
+    options.add_argument('--disable-gpu') # 暫定的に必要なフラグとのこと
+    Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
+  end
+
+  Capybara.javascript_driver = :selenium_chrome
+
+  # ActionController::Base.asset_host = "http://localhost:3000"
+  # Capybara.default_driver = :selenium
+  # config.include Capybara::DSL
 end
