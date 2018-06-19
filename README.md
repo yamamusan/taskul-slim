@@ -405,3 +405,69 @@ mv app/assets/stylesheets/application.css app/assets/stylesheets/application.scs
 ### 中身の画面もおしゃれにする
 
 * 一覧、登録、編集画面を整備する(ここはコミット参照)
+* ⭐️今ココ！登録と編集画面はまだ。後ででいいかな。。。
+
+### 多言語対応をする
+
+* まず、デフォルトの言語設定を日本語にするため、`application.rb`に以下の設定を追加する
+
+```
+config.i18n.default_locale = :ja
+```
+* `config/locales/ja.yml`を作成する
+* `https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/ja.yml`の内容をローカルにコピーする
+* これで、 バリデーションメッセージは`バリデーションに失敗しました: Titleを入力してください`のように日本語化される
+* :Titleの部分も日本語化したい。`config/locales/ja.yml`に以下を追記する
+```
+ja:
+  activerecord:
+    models:
+      task: タスク
+    attributes:
+      task:
+        title: タイトル
+        description: 説明
+```
+* これで、`バリデーションに失敗しました: タイトルを入力してください`のように表示されるようになる
+* 今回、以下のような独自メッセージも追加している。
+
+```
+def not_before_today
+  errors.add(:due_date, 'Please set today or after today') if due_date.present? && due_date < Date.today
+end
+```
+* これを多言語対応してみる。まず、`task.rb`のバリデーションを以下のように変更
+
+```
+  errors.add(:due_date, :not_before_today) if due_date.present? && due_date < Date.today
+```
+* ja.ymlに以下を追加
+
+```
+  errors:
+    format: "%{attribute}%{message}"
+    messages:
+      (略)
+      not_before_today: "には本日以降の日付を指定してください"
+```
+* これで、`バリデーションに失敗しました: 期限は本日以降の日付を指定してください`のように表示されるようになる
+* 続いて、ボタン名などフロントオンリーのものも多言語化
+  * まずは、ja,ymlに以下を追加
+
+```
+  button:
+    new: 新規作成
+    show: 詳細
+    edit: 編集
+    destroy: 削除
+    back: 戻る
+```
+  * view側では以下のような感じで指定する　
+
+```
+td = link_to t('button.show'), task
+```
+
+* TODO:バリデーションエラー時に`error prohibited this task from being saved:`と出たまま。
+  * ここはべたで書いてるから。まあいっか。余裕があればscaffoldのテンプレートいじってみる
+

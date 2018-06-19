@@ -39,5 +39,8 @@ module TaskulSlim
       g.controller_specs false
       g.request_specs false
     end
+    
+    config.i18n.default_locale = :ja
+
   end
 end

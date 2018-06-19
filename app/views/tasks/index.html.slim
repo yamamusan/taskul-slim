@@ -2,7 +2,7 @@
   p.h2.d-inline タスク
   / data属性は以下のように指定する
   / = link_to 'New Task', new_task_path, class: 'btn btn-primary', data: {target: '#task-register',  toggle: "modal"}
-  = link_to '新規登録', new_task_path, class: 'btn btn-primary'
+  = link_to t('button.new'), new_task_path, class: 'btn btn-primary'
 
 .table-responsive
   table.table.table-striped
@@ -30,7 +30,6 @@
           td = task.status
           td = task.due_date
           / TODO:以下のようにi18n対応したい
-          / td = link_to t(button.show), task
-          td = link_to 'Show', task
-          td = link_to 'Edit', edit_task_path(task)
-          td = link_to 'Destroy', task, data: { confirm: 'Are you sure?' }, method: :delete
+          td = link_to t('button.show'), task
+          td = link_to t('button.edit'), task
+          td = link_to t('button.destroy'), task
