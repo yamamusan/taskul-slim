@@ -341,4 +341,31 @@ br
 
 ## bootstarpを導入する
 
+* gem をインストール(以下をGemfileに記載して`bundle install`)
+
+```
+gem 'bootstrap', '~> 4.1.1'
+gem 'jquery-rails'
+```
+
+* 以下で、application.cssをapplication.scssにリネームする
+
+```
+mv app/assets/stylesheets/application.css app/assets/stylesheets/application.scss
+```
+
+* app/assets/stylesheets/application.scssでbootstrapをimportさせる(中身を置き換える)
+
+```
+// Custom bootstrap variables must be set or imported *before* bootstrap.
+@import "bootstrap";mv app/assets/stylesheets/application.css
+```
+
+* Bootstrapと依存関係をapplication.jsに追記する
+
+```
+//= require jquery3
+//= require popper
+//= require bootstrap-sprockets
+```
 
