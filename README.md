@@ -221,6 +221,33 @@ end
 
 ## Controllerの作成 
 
+* `buner g scaffold_controller task --no-controller-specs --no-view-specs --no-helper-specs --no-routing-specs --no-request-specs`で、コントローラの雛形を作成
+* 毎回オプションを指定するのは面倒なので、applicaiton.rbを以下のようにする
+
+```
+config.generators do |g|
+  g.system_tests = nil
+  g.template_engine = :slim
+  g.view_specs false
+  g.helper_specs false
+  g.routing_specs false
+  g.controller_specs false
+  g.request_specs false
+end
+```
+
+* これで以降は、`buner g scaffold_controller task`でいける
+
+## Routingの作成
+
+```
+Rails.application.routes.draw do
+  resources :tasks, except: %i[destroy] do
+    delete :index, on: :collection, action: :delete
+  end
+end
+```
+
 ## Viewの作成
 
 
