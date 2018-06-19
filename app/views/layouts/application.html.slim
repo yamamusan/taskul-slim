@@ -1,0 +1,35 @@
+doctype html
+html
+  head
+    meta content=("text/html; charset=UTF-8") http-equiv="Content-Type" /
+    title TaskulSlim
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+  body
+
+    /! 固定ヘッダ
+    .sticky-top
+      nav.navbar.navbar-dark.navbar-expand-lg.taskul-nav-color
+        a.navbar-brand href="/"  Taskul
+        /! レスポンシブデザイン用に画面サイズが小さくなったらdata-targetのブロックを隠し、右側にメニューを表示する
+        button.navbar-toggler aria-controls="navbarSupportedContent" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbarSupportedContent" data-toggle="collapse" type="button" 
+          span.navbar-toggler-icon
+        /! Bootstrapのドロップダウンメニューを利用。中のテキストは画像にしている
+        #navbarSupportedContent.collapse.navbar-collapse
+          ul.navbar-nav.ml-auto
+            li.nav-item.dropdown
+              a#navbarDropdown.nav-link.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button" 
+                /! イメージを直接表示する場合
+                = image_tag('user.png') 
+                /! イメージもCSS化する場合は以下のような感じ　
+                /! <div id="taskul-user" class="img-fluid"></div
+              .dropdown-menu.dropdown-menu-right aria-labelledby="navbarDropdown" 
+                a.dropdown-item href="#"  プロフィール
+                a.dropdown-item href="#"  アカウント管理
+                .dropdown-divider
+                a.dropdown-item href="#"  Something else here
+
+    .container-fluid
+      = yield

@@ -369,3 +369,39 @@ mv app/assets/stylesheets/application.css app/assets/stylesheets/application.scs
 //= require bootstrap-sprockets
 ```
 
+## デザインをかっこよくする
+
+### スタイルシートの管理方法を考える
+
+* まず仕組みとして、application.html.erbで以下のように指定しているので、applcation.scssがロードされ、それをベースにcssのリンクタグが生成される　
+
+```
+<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+```
+
+* なので、application.scssには以下の用に定義することとする
+* これは、bootstrapはまず最初に読み込んで、そのあとに、共通cssを、そのあとは個別のやつを読み込む感じ
+* あれ？この場合、taskの場合、task.scssだけ読み込むとかはできんのかな？まあいいか.
+
+```
+@import "bootstrap";
+@import "common.scss";
+@import "partial/*";
+```
+
+### 共通のヘッダやフッタを整備するには
+
+* こちらもapplication.html.erbで定義する。
+* まず、application.html.erbをslim形式に変換して、nvabarを設置する
+
+### 画像を参照するには
+
+* assets/images以下に画像をおいたら、以下のように指定すればOK
+
+```
+= image_tag('user.png') 
+```
+
+### 中身の画面もおしゃれにする
+
+* 一覧、登録、編集画面を整備する(ここはコミット参照)

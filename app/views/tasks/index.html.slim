@@ -1,31 +1,36 @@
-h1 Listing tasks
+.taskul-title-area
+  p.h2.d-inline タスク
+  / data属性は以下のように指定する
+  / = link_to 'New Task', new_task_path, class: 'btn btn-primary', data: {target: '#task-register',  toggle: "modal"}
+  = link_to '新規登録', new_task_path, class: 'btn btn-primary'
 
-table
-  thead
-    tr
-      th = Task.human_attribute_name(:title)
-      th = Task.human_attribute_name(:description)
-      th = Task.human_attribute_name(:priority)
-      th = Task.human_attribute_name(:status)
-      th = Task.human_attribute_name(:due_date)
-      th
-      th
-      th
-
-  tbody
-    - @tasks.each do |task|
+.table-responsive
+  table.table.table-striped
+    thead
       tr
-        td = task.title
-        td = task.description
-        td = task.priority
-        td = task.status
-        td = task.due_date
-        / TODO:以下のようにi18n対応したい
-        / td = link_to t(button.show), task
-        td = link_to 'Show', task
-        td = link_to 'Edit', edit_task_path(task)
-        td = link_to 'Destroy', task, data: { confirm: 'Are you sure?' }, method: :delete
+        th scope="col" 
+          input#checkbox-header.styled onclick="alert('hoge')" type="checkbox" 
+        th = Task.human_attribute_name(:title)
+        th = Task.human_attribute_name(:description)
+        th = Task.human_attribute_name(:priority)
+        th = Task.human_attribute_name(:status)
+        th = Task.human_attribute_name(:due_date)
+        th
+        th
+        th
 
-br
-
-= link_to 'New Task', new_task_path
+    tbody
+      - @tasks.each do |task|
+        tr
+          th scope="row" 
+            input.styled.checkbox-list data-id="#{task.id}" id="checkbox-${task.id}" type="checkbox"
+          td = task.title
+          td = task.description
+          td = task.priority
+          td = task.status
+          td = task.due_date
+          / TODO:以下のようにi18n対応したい
+          / td = link_to t(button.show), task
+          td = link_to 'Show', task
+          td = link_to 'Edit', edit_task_path(task)
+          td = link_to 'Destroy', task, data: { confirm: 'Are you sure?' }, method: :delete
