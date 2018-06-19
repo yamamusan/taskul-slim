@@ -1,24 +1,38 @@
-# README
+# 初期構築
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+##  プロジェクトの作成
 
-Things you may want to cover:
+```
+bundle init
+# Gemfileのrailsコメントアウト解除
 
-* Ruby version
+bundle install --path vendor/bundle
+buner new . -B --webpack=vue --skip-test
+buner webpacker:install
+```
 
-* System dependencies
+## Slimの導入
 
-* Configuration
+* Gemfileに以下を追記し、`bundle install`
 
-* Database creation
+```
+gem 'slim-rails'
+```
 
-* Database initialization
+* ジェネレータのテンプレートエンジンをslimに変更する(application.rb)
 
-* How to run the test suite
+```
+config.generators.template_engine = :slim
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+## hello-slim
 
-* Deployment instructions
+* 以下で、`http://localhost:3000/products`でCRUD画面が使えるようになる
+```
+buner g scaffold Product name:string description:text price:integer discontinued:boolean
+buner db:migrate
+buner s
+```
 
-* ...
+* 以下で、元に戻しておく
+
