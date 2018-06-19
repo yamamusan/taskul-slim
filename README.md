@@ -407,7 +407,7 @@ mv app/assets/stylesheets/application.css app/assets/stylesheets/application.scs
 * 一覧、登録、編集画面を整備する(ここはコミット参照)
 * ⭐️今ココ！登録と編集画面はまだ。後ででいいかな。。。
 
-### 多言語対応をする
+## 多言語対応をする
 
 * まず、デフォルトの言語設定を日本語にするため、`application.rb`に以下の設定を追加する
 
@@ -471,3 +471,10 @@ td = link_to t('button.show'), task
 * TODO:バリデーションエラー時に`error prohibited this task from being saved:`と出たまま。
   * ここはべたで書いてるから。まあいっか。余裕があればscaffoldのテンプレートいじってみる
 
+## ルートパスの変更
+
+* `routes.rb`に以下のように書くだけ
+
+```
+  root to: 'tasks#index'
+```
