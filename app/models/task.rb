@@ -6,7 +6,7 @@ class Task < ApplicationRecord
 
   validates :title, presence: true, length: { maximum: 256 }
   validates :status, presence: true
-  validate :not_before_today
+  validate :not_before_today, on: :create
 
   scope :title_like, ->(title) { where('title like ?', "%#{title}%") if title.present? }
   scope :description_like, ->(description) { where('description like ?', "%#{description}%") if description.present? }
