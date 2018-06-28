@@ -248,3 +248,8 @@ ja:
     edit: 編集
     destroy: 削除
     back: 戻る
+  tasks:
+    create:
+      success: "%{task}の登録に成功しました"
+    update:
+      success: "%{task}の更新に成功しました"
