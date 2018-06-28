@@ -478,3 +478,10 @@ td = link_to t('button.show'), task
 ```
   root to: 'tasks#index'
 ```
+
+## FeatureSpecの更新
+
+
+## 登録と更新を子画面化(vuejsを使用)
+
+

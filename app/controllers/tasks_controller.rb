@@ -28,7 +28,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.save
-        format.html { redirect_to @task, notice: t('.success', task: Task.model_name.human) }
+        format.html { redirect_to @task, notice: t('view.notice.success.register', task: Task.model_name.human) }
         format.json { render :show, status: :created, location: @task }
       else
         format.html { render :new }
@@ -42,7 +42,7 @@ class TasksController < ApplicationController
   def update
     respond_to do |format|
       if @task.update(task_params)
-        format.html { redirect_to @task, notice: t('.success', task: Task.model_name.human) }
+        format.html { redirect_to @task, notice: t('view.notice.success.update', task: Task.model_name.human) }
         format.json { render :show, status: :ok, location: @task }
       else
         format.html { render :edit }
@@ -51,12 +51,19 @@ class TasksController < ApplicationController
     end
   end
 
+  # DELETE /tasks
+  # DELETE /tasks.json
+  def delete
+    # TODO: SELECTしてから１件ずつDELETEしているので性能悪そう
+    Task.where(id: params[:ids]).destroy_all
+  end
+
   # DELETE /tasks/1
   # DELETE /tasks/1.json
   def destroy
     @task.destroy
     respond_to do |format|
-      format.html { redirect_to tasks_url, notice: 'Task was successfully destroyed.' }
+      format.html { redirect_to tasks_url, notice: t('view.notice.success.destroy', task: Task.model_name.human) }
       format.json { head :no_content }
     end
   end

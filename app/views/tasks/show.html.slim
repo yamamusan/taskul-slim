@@ -1,6 +1,8 @@
-h1 Detail task
+.taskul-title-area
+  p.h2.d-inline タスク詳細
 
-p#notice = notice
+- if flash[:notice]
+  div#notice.alert.alert-success = notice
 
 = form_for @task do |f|
   .item

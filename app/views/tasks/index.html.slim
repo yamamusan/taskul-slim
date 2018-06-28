@@ -1,8 +1,21 @@
-.taskul-title-area
-  p.h2.d-inline タスク
-  / data属性は以下のように指定する
-  / = link_to 'New Task', new_task_path, class: 'btn btn-primary', data: {target: '#task-register',  toggle: "modal"}
-  = link_to t('button.new'), new_task_path, class: 'btn btn-primary'
+.row
+  p.h2.col-2.mt-2 タスク
+
+- if flash[:notice]
+  div#notice.alert.alert-success = notice
+
+.taskul-title-area.d-flex.justify-content-start.align-items-center
+  /! TODO: 反転もできるようにしたい
+  .mr-auto
+    button.btn.btn-info.btn-sm.m-1 未着手
+    button.btn.btn-warning.btn-sm.m-1 着手
+    button.btn.btn-success.btn-sm.m-1 完了
+  .ml-auto
+    button.btn.btn-secondary.m-1 詳細検索
+    button#delete-btn.btn.btn-danger.m-1 削除
+    = link_to t('button.new'), new_task_path, class: 'btn btn-primary m-1'
+    / data属性は以下のように指定する
+    / = link_to 'New Task', new_task_path, class: 'btn btn-primary', data: {target: '#task-register',  toggle: "modal"}
 
 .table-responsive
   table.table.table-striped
@@ -15,9 +28,7 @@
         th = Task.human_attribute_name(:priority)
         th = Task.human_attribute_name(:status)
         th = Task.human_attribute_name(:due_date)
-        th
-        th
-        th
+        th colspan="3" アクション 
 
     tbody
       - @tasks.each do |task|
@@ -29,7 +40,8 @@
           td = task.priority
           td = task.status
           td = task.due_date
+
           / TODO:以下のようにi18n対応したい
           td = link_to t('button.show'), task
-          td = link_to t('button.edit'), task
-          td = link_to t('button.destroy'), task
+          td = link_to t('button.edit'), edit_task_path(task)
+          td = link_to t('button.destroy'), task, data: { confirm: t('view.confirm.destroy') }, method: :delete
