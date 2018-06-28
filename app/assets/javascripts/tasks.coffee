@@ -9,8 +9,8 @@ jQuery ->
   $("#delete-btn").click ->
     check_count = $('.checkbox-list:checked').length;
     if check_count == 0
-      alert 'no delete target checked'
+      alert (I18n.t('view.error.no_check'))
       return false
     else
-      confirm 'delete tasks?'
+      confirm (I18n.t('view.confirm.destroy'))
 

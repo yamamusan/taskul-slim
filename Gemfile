@@ -40,6 +40,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 
 gem 'slim-rails'
 
+gem 'i18n-js'
 gem 'bootstrap', '~> 4.1.1'
 gem 'jquery-rails'
 

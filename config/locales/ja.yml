@@ -256,3 +256,5 @@ ja:
         register: "%{task}の登録に成功しました"
         update: "%{task}の更新に成功しました"
         destroy: "%{task}の削除に成功しました"
+    error:
+      no_check: 削除対象が一つも選択されていません 

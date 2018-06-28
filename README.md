@@ -503,7 +503,31 @@ jQuery ->
 
 ## coffescriptのi18n対応
 
-* TODO
+上記はcoffeescriptにメッセージがべた書きなのでi18n対応をしたい
+
+* Gemfileに追加して、`bundle install`
+
+```
+gem 'i18n-js'
+```
+* application.jsに以下を追加
+
+```
+//= require i18n
+//= require i18n/translations
+```
+* application.html.slimに以下を追加
+
+```
+    javascript:
+      I18n.defaultLocale = "#{I18n.default_locale}";
+      I18n.locale = "#{I18n.locale}";
+      I18n.fallbacks = true;
+```
+
+* `buner i18n:js:export`を実施して、ja.ymlとかをtranslations.jsに書き出す(初回だけやっておけばOKっぽい)
+* あとは、`confirm (I18n.t('view.confirm.destroy'))`のようにやってあげれば同じように使える
+* なお、このやり方はcoffe-scriptじゃなくても使える模様
 
 ## FeatureSpecの更新
 
