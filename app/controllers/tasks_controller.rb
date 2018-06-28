@@ -54,8 +54,11 @@ class TasksController < ApplicationController
   # DELETE /tasks
   # DELETE /tasks.json
   def delete
-    # TODO: SELECTしてから１件ずつDELETEしているので性能悪そう
-    Task.where(id: params[:ids]).destroy_all
+    Task.destroy(params[:ids].keys)
+    respond_to do |format|
+      format.html { redirect_to tasks_url, notice: t('view.notice.success.destroy', task: Task.model_name.human) }
+      format.json { head :no_content }
+    end
   end
 
   # DELETE /tasks/1

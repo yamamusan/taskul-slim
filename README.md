@@ -479,6 +479,32 @@ td = link_to t('button.show'), task
   root to: 'tasks#index'
 ```
 
+## coffee script使いたくないけど使う
+
+* まず、全選択解除チェックボックスの実装(tasks.coffee)
+
+```
+jQuery ->
+  $("#checkbox-header").click ->
+    $('.checkbox-list').prop('checked', $('#checkbox-header').prop('checked'))
+```
+* 一括削除ボタン押下時の処理(tasks.coffee)
+```
+jQuery ->
+  ...
+  $("#delete-btn").click ->
+    check_count = $('.checkbox-list:checked').length;
+    if check_count == 0
+      alert 'no delete target checked'
+      return false // submitを中断する
+    else
+      confirm 'delete tasks?'
+```
+
+## coffescriptのi18n対応
+
+* TODO
+
 ## FeatureSpecの更新
 
 

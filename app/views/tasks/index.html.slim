@@ -4,44 +4,46 @@
 - if flash[:notice]
   div#notice.alert.alert-success = notice
 
-.taskul-title-area.d-flex.justify-content-start.align-items-center
-  /! TODO: 反転もできるようにしたい
-  .mr-auto
-    button.btn.btn-info.btn-sm.m-1 未着手
-    button.btn.btn-warning.btn-sm.m-1 着手
-    button.btn.btn-success.btn-sm.m-1 完了
-  .ml-auto
-    button.btn.btn-secondary.m-1 詳細検索
-    button#delete-btn.btn.btn-danger.m-1 削除
-    = link_to t('button.new'), new_task_path, class: 'btn btn-primary m-1'
-    / data属性は以下のように指定する
-    / = link_to 'New Task', new_task_path, class: 'btn btn-primary', data: {target: '#task-register',  toggle: "modal"}
 
-.table-responsive
-  table.table.table-striped
-    thead
-      tr
-        th scope="col" 
-          input#checkbox-header.styled onclick="alert('hoge')" type="checkbox" 
-        th = Task.human_attribute_name(:title)
-        th = Task.human_attribute_name(:description)
-        th = Task.human_attribute_name(:priority)
-        th = Task.human_attribute_name(:status)
-        th = Task.human_attribute_name(:due_date)
-        th colspan="3" アクション 
+= form_tag(tasks_path, method: :delete) do
 
-    tbody
-      - @tasks.each do |task|
+  .taskul-title-area.d-flex.justify-content-start.align-items-center
+    /! TODO: 反転もできるようにしたい
+    .mr-auto
+      button.btn.btn-info.btn-sm.m-1 未着手
+      button.btn.btn-warning.btn-sm.m-1 着手
+      button.btn.btn-success.btn-sm.m-1 完了
+    .ml-auto
+      button.btn.btn-secondary.m-1 詳細検索
+      = submit_tag t('button.destroy'), id: 'delete-btn', class: 'btn btn-danger m-1' 
+      = link_to t('button.new'), new_task_path, class: 'btn btn-primary m-1'
+      / data属性は以下のように指定する
+      / = link_to 'New Task', new_task_path, class: 'btn btn-primary', data: {target: '#task-register',  toggle: "modal"}
+
+  .table-responsive
+    table.table.table-striped
+      thead
         tr
-          th scope="row" 
-            input.styled.checkbox-list data-id="#{task.id}" id="checkbox-${task.id}" type="checkbox"
-          td = task.title
-          td = task.description
-          td = task.priority
-          td = task.status
-          td = task.due_date
+          th scope="col" 
+            input#checkbox-header.styled type="checkbox" 
+          th = Task.human_attribute_name(:title)
+          th = Task.human_attribute_name(:description)
+          th = Task.human_attribute_name(:priority)
+          th = Task.human_attribute_name(:status)
+          th = Task.human_attribute_name(:due_date)
+          th colspan="3" アクション 
 
-          / TODO:以下のようにi18n対応したい
-          td = link_to t('button.show'), task
-          td = link_to t('button.edit'), edit_task_path(task)
-          td = link_to t('button.destroy'), task, data: { confirm: t('view.confirm.destroy') }, method: :delete
+      tbody
+        - @tasks.each do |task|
+          tr
+            th scope="row" 
+              = check_box_tag "ids[#{ task.id }]", task.id, false, class: "styled checkbox-list"
+            td = task.title
+            td = task.description
+            td = task.priority
+            td = task.status
+            td = task.due_date
+
+            td = link_to t('button.show'), task
+            td = link_to t('button.edit'), edit_task_path(task)
+            td = link_to t('button.destroy'), task, data: { confirm: t('view.confirm.destroy') }, method: :delete
