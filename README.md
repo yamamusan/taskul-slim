@@ -529,6 +529,18 @@ gem 'i18n-js'
 * あとは、`confirm (I18n.t('view.confirm.destroy'))`のようにやってあげれば同じように使える
 * なお、このやり方はcoffe-scriptじゃなくても使える模様
 
+## リストのアクションをアイコンにしよう
+
+* GoogleのMaterialDesignから適切なアイコンをダウンロード
+* imagesの下に置いて、slimからは以下のように指定すればOK
+
+```
+td.px-0.d-flex
+  .mx-1 = link_to image_tag('detail.png'), task
+  .mx-1 = link_to image_tag('edit.png'), edit_task_path(task)
+  .mx-1 = link_to image_tag('delete.png'), task, data: { confirm: t('view.confirm.destroy') }, method: :delete
+```
+
 ## FeatureSpecの更新
 
 
