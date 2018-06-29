@@ -541,7 +541,28 @@ td.px-0.d-flex
   .mx-1 = link_to image_tag('delete.png'), task, data: { confirm: t('view.confirm.destroy') }, method: :delete
 ```
 
-## FeatureSpecの更新
+## Railsのタイムゾーンを日本（東京）に設定&フォーマット修正
+
+* タイムゾーンの設定は`application.rb`に以下を設定すれば良い
+
+```
+    config.time_zone = 'Tokyo'   
+```
+* 時間フォーマットの設定は`config/initilizer/time_formats.rb`に以下のように記載
+
+```
+Time::DATE_FORMATS[:default] = '%Y/%m/%d %H:%M'
+Time::DATE_FORMATS[:datetime] = '%Y/%m/%d %H:%M'
+Time::DATE_FORMATS[:date] = '%Y/%m/%d'
+Time::DATE_FORMATS[:time] = '%H:%M:%S'
+Date::DATE_FORMATS[:default] = '%Y/%m/%d'
+```
+
+## 一覧の結果をカード表示
+
+
+## 検索機能の追加
+
 
 
 ## 登録と更新を子画面化(vuejsを使用)
