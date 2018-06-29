@@ -560,14 +560,37 @@ Date::DATE_FORMATS[:default] = '%Y/%m/%d'
 
 ## 一覧の結果をカード表示
 
+* だいたい以下のような感じで、カード化に成功
+* ポイントは、画像を良い感じに表示するための`taskul-card-img`
+* あと、card-deckは複数行だと変になるので、行内で高さを固定するためにh-100を指定している点。
+
+```
+  .row
+    - @tasks.each_with_index do |task, index|
+      .col-6.col-md-3.mb-4
+        .card.h-100
+          .card-header.taskul-color-card.text-white.text-truncate = task.title
+          = link_to image_tag("card#{(1..4).to_a.sample}.jpg", class: 'card-img-top taskul-card-img'), task
+          .card-body
+            p.card-text = task.description
+            span.badge.badge-success.mr-2 = task.priority
+            span.badge.badge-info.mr-2 = task.status
+          .card-footer.d-flex.justify-content-center
+            .mx-3 = link_to image_tag('detail.png'), task
+            .mx-3 = link_to image_tag('edit.png'), edit_task_path(task)
+            .mx-3 = link_to image_tag('delete.png'), task, data: { confirm: t('view.confirm.destroy') }, method: :delete
+```
 
 ## ページングの導入
+
+TODO!!いまここ!!!
 
 
 ## コメント機能の追加(has_many)
 
-## 検索機能の追加
+TODO!!いまここ!!!
 
+## 検索機能の追加
 
 
 ## 登録と更新を子画面化(vuejsを使用)
