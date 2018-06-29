@@ -27,10 +27,11 @@
           th scope="col" 
             input#checkbox-header.styled type="checkbox" 
           th = Task.human_attribute_name(:title)
-          th = Task.human_attribute_name(:description)
           th = Task.human_attribute_name(:priority)
           th = Task.human_attribute_name(:status)
           th = Task.human_attribute_name(:due_date)
+          th = Task.human_attribute_name(:created_at)
+          th = Task.human_attribute_name(:updated_at)
           th.px-0 アクション 
 
       tbody
@@ -39,10 +40,11 @@
             th scope="row" 
               = check_box_tag "ids[#{ task.id }]", task.id, false, class: "styled checkbox-list"
             td = task.title
-            td = task.description
             td = task.priority
             td = task.status
             td = task.due_date
+            td = task.created_at
+            td = task.updated_at
             td.px-0.d-flex
               .mx-1 = link_to image_tag('detail.png'), task
               .mx-1 = link_to image_tag('edit.png'), edit_task_path(task)

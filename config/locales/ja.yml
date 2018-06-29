@@ -45,6 +45,9 @@ ja:
           has_many: "%{record}が存在しているので削除できません"
     models:
       task: タスク
+  attributes:
+    created_at: 登録日時
+    updated_at: 更新日時
   date:
     abbr_day_names:
     - 日
