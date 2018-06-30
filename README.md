@@ -671,8 +671,18 @@ ja:
       more_pages:
 ```
 
+##　ツールチップの追加
+
+アイコンで表現している編集や削除に対して、ツールチップを付与しましょう
+* 以下のような属性を追加してあげればOK
+
+```
+data-toggle="tooltip" data-placement="top" title="Tooltip on top"
+```
+
 ## コメント機能の追加(has_many)
 
+### 
 TODO!!いまここ!!!
 
 ## 検索機能の追加(モーダルで実装)
