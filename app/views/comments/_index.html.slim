@@ -1,0 +1,16 @@
+.modal-dialog role="document" 
+  .modal-content
+    .modal-header
+      h5#exampleModalLabel.modal-title コメント
+      button.close aria-label="Close" data-dismiss="modal" type="button" 
+        span aria-hidden="true"  ×
+    .modal-body
+      - task.comments.each do |comment|
+        .d-flex.justify-content-between
+          = comment.contents
+          .
+            .mx-1.d-inline = link_to image_tag('edit.png'), edit_task_comment_path(task, comment), title: "編集", data: {toggle: 'tooltip', placement: 'bottom'}
+            .mx-1.d-inline = link_to image_tag('delete.png'), task_comment_path(task, comment), title: "削除", data: { confirm: t('views.confirm.destroy'), toggle: 'tooltip', placement: 'bottom' }, method: :delete
+    .modal-footer
+      button.btn.btn-secondary data-dismiss="modal" type="button"  Close
+      = link_to t('button.add'), new_task_comment_path(task),  class: 'btn btn-primary m-1'

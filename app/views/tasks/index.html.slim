@@ -23,34 +23,26 @@
   = paginate @tasks
 
   .row
-    - @tasks.each_with_index do |task, index|
+    - @tasks.each_with_index do |task, i|
       .col-6.col-md-4.col-xl-3.mb-4
         .card.h-100
           .card-header.taskul-color-card.text-white.text-truncate = task.title
           .taskul-card-image-frame
             = link_to image_tag("card#{(1..4).to_a.sample}.jpg", class: 'card-img-top taskul-card-img'), task
-            button.btn.btn-link data-target="#comment-modal" data-toggle="modal" type="button" 
+            button.btn.btn-link data-target="#comment-modal-#{task.id}" data-toggle="modal" type="button" 
               / = image_tag("fukidashi.png", class: 'taskul-comment')
               h5
                 span.badge.badge-pill.badge-success.px-3.py-2 = task.comments.size
           .card-body
             p.card-text = task.description
           .d-flex.justify-content-center.mb-2
-            .badge.badge-success.mr-2.align-bottom = task.priority
-            .badge.badge-info.mr-2.align-bottom = task.status
-          #comment-modal.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1" 
-            .modal-dialog role="document" 
-              .modal-content
-                .modal-header
-                  h5#exampleModalLabel.modal-title コメント
-                  button.close aria-label="Close" data-dismiss="modal" type="button" 
-                    span aria-hidden="true"  ×
-                .modal-body
-                  - task.comments.each do |comment|
-                    ul
-                      li= comment.contents
-                .modal-footer
-                  button.btn.btn-secondary data-dismiss="modal" type="button"  Close
+            .badge.badge-success.mr-2.align-bottom.p-2 = task.priority
+            .badge.badge-info.mr-2.align-bottom.p-2 = task.status
+
+          / TODO:ここで裏ではページ内タスク分データ保持しちゃってるので、本当は押された時にajaxで取りに行った方がいいんだろうな
+          / TODO:その関係か、画面遷移時に一瞬モーダルが表示されたりしちゃう
+          .modal.fade id="comment-modal-#{task.id}" aria-hidden="true" role="dialog" tabindex="-1" 
+            == render 'comments/index', task: task 
 
           .card-footer.d-flex.justify-content-center
             .mx-3 = link_to image_tag('detail.png'), task, title: "詳細", data: {toggle: 'tooltip', placement: 'bottom'}

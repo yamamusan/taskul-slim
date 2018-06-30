@@ -37,6 +37,8 @@ ja:
         priority : 優先度
         status : ステータス
         due_date : 期限
+      comment:
+        contents: 内容
     errors:
       messages:
         record_invalid: "入力内容に誤りがあります. %{errors}"
@@ -45,6 +47,7 @@ ja:
           has_many: "%{record}が存在しているので削除できません"
     models:
       task: タスク
+      comment: コメント
   attributes:
     created_at: 登録日時
     updated_at: 更新日時
@@ -247,6 +250,7 @@ ja:
     pm: 午後
   button:
     new: 新規作成
+    add: 追加
     show: 詳細
     edit: 編集
     destroy: 削除
@@ -256,9 +260,9 @@ ja:
       destroy: "削除します。よろしいですか？"
     notice:
       success:
-        register: "%{task}の登録に成功しました"
-        update: "%{task}の更新に成功しました"
-        destroy: "%{task}の削除に成功しました"
+        register: "%{model}の登録に成功しました"
+        update: "%{model}の更新に成功しました"
+        destroy: "%{model}の削除に成功しました"
     error:
       no_check: 削除対象が一つも選択されていません 
     pagination:

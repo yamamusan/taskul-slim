@@ -720,11 +720,75 @@ Comment Load (2.0ms)  SELECT  "comments".* FROM "comments" WHERE "comments"."tas
 => #<ActiveRecord::Associations::CollectionProxy [#<Comment id: 1, contents: "Minus ea deserunt quia ut sit perspiciatis laudant...", task_id: 1, created_at: "2018-06-30 13:45:31", updated_at: "2018-06-30 13:45:31">, #<Comment id: 2, contents: "Eum voluptatem cum explicabo libero eum error.", task_id: 1, created_at: "2018-06-30 13:45:31", updated_at: "2018-06-30 13:45:31">]>
 ```
 
-### 画面側に表示
+### 画面でコメントを参照できるようにする
+
+* `buner g controller Comments`で画面周りの雛形を生成する
+* index.html.slimは以下のようにして、modal呼び出しを設置する
+
+```
+.row
+  - @tasks.each_with_index do |task, index|
+    .col-6.col-md-4.col-xl-3.mb-4
+      .card.h-100
+        .card-header.taskul-color-card.text-white.text-truncate = task.title
+        .taskul-card-image-frame
+          = link_to image_tag("card#{(1..4).to_a.sample}.jpg", class: 'card-img-top taskul-card-img'), task
+          button.btn.btn-link data-target="#comment-modal" data-toggle="modal" type="button" 
+            / = image_tag("fukidashi.png", class: 'taskul-comment')
+            h5
+              span.badge.badge-pill.badge-success.px-3.py-2 = task.comments.size
+        .card-body
+```
+
+* modal自体はcomments/_show.html.slimに記載する
+
+```
+#comment-modal.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1" 
+  .modal-dialog role="document" 
+    .modal-content
+      .modal-header
+        h5#exampleModalLabel.modal-title コメント
+        button.close aria-label="Close" data-dismiss="modal" type="button" 
+          span aria-hidden="true"  ×
+      .modal-body
+        - task.comments.each do |comment|
+          ul
+            li= comment.contents
+      .modal-footer
+        button.btn.btn-secondary data-dismiss="modal" type="button"  Close
+```
+
+* このpatialはindex.html.slimで以下のように呼び出せばOK(==はエスケープをしないって意味)
+
+```
+  == render 'comments/show', task: task 
+```
+
+### 画面でコメントのCRUD操作ができるようにする
+
+* ルーティングを追加する
+
+```
+  resources :tasks  do
+    delete :index, on: :collection, action: :delete
+    resources :comments
+  end
+```
+ 
+* コントローラとViewを実装する
+  * ボリュームがでかいのでコード参照
+  * ポイントは、_form.html.slimで以下のように、taskもパラメータに渡す必要があること
+
+```
+  = form_for [@task, @comment] do |f|
+  ...
+  edit_task_comment_path(task, comment)
+```
+
+## 検索機能とソート順の追加(モーダルで実装)
 
 
-## 検索機能の追加(モーダルで実装)
-
+## カード版の一括選択削除
 
 
 
