@@ -6,7 +6,7 @@ class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
   def index
-    @tasks = Task.all
+    @tasks = Task.page(params[:page])
   end
 
   # GET /tasks/1
@@ -28,7 +28,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.save
-        format.html { redirect_to @task, notice: t('view.notice.success.register', task: Task.model_name.human) }
+        format.html { redirect_to @task, notice: t('views.notice.success.register', task: Task.model_name.human) }
         format.json { render :show, status: :created, location: @task }
       else
         format.html { render :new }
@@ -42,7 +42,7 @@ class TasksController < ApplicationController
   def update
     respond_to do |format|
       if @task.update(task_params)
-        format.html { redirect_to @task, notice: t('view.notice.success.update', task: Task.model_name.human) }
+        format.html { redirect_to @task, notice: t('views.notice.success.update', task: Task.model_name.human) }
         format.json { render :show, status: :ok, location: @task }
       else
         format.html { render :edit }
@@ -56,7 +56,7 @@ class TasksController < ApplicationController
   def delete
     Task.destroy(params[:ids].keys)
     respond_to do |format|
-      format.html { redirect_to tasks_url, notice: t('view.notice.success.destroy', task: Task.model_name.human) }
+      format.html { redirect_to tasks_url, notice: t('views.notice.success.destroy', task: Task.model_name.human) }
       format.json { head :no_content }
     end
   end
@@ -66,7 +66,7 @@ class TasksController < ApplicationController
   def destroy
     @task.destroy
     respond_to do |format|
-      format.html { redirect_to tasks_url, notice: t('view.notice.success.destroy', task: Task.model_name.human) }
+      format.html { redirect_to tasks_url, notice: t('views.notice.success.destroy', task: Task.model_name.human) }
       format.json { head :no_content }
     end
   end

@@ -4,7 +4,6 @@
 - if flash[:notice]
   div#notice.alert.alert-success = notice
 
-
 = form_tag(tasks_path, method: :delete) do
 
   .taskul-title-area.d-flex.justify-content-start.align-items-center
@@ -20,6 +19,9 @@
       / data属性は以下のように指定する
       / = link_to 'New Task', new_task_path, class: 'btn btn-primary', data: {target: '#task-register',  toggle: "modal"}
 
+  p.text-center.mb-0.small.text-secondary = page_entries_info @tasks
+  = paginate @tasks
+
   .row
     - @tasks.each_with_index do |task, index|
       .col-6.col-md-4.col-xl-3.mb-4
@@ -34,7 +36,10 @@
           .card-footer.d-flex.justify-content-center
             .mx-3 = link_to image_tag('detail.png'), task
             .mx-3 = link_to image_tag('edit.png'), edit_task_path(task)
-            .mx-3 = link_to image_tag('delete.png'), task, data: { confirm: t('view.confirm.destroy') }, method: :delete
+            .mx-3 = link_to image_tag('delete.png'), task, data: { confirm: t('views.confirm.destroy') }, method: :delete
+
+  p.text-center.mb-0.small.text-secondary = page_entries_info @tasks
+  = paginate @tasks
 
   / ★テーブルで一覧を出力する場合
   / .table-responsive

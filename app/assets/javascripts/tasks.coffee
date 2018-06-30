@@ -9,8 +9,8 @@ jQuery ->
   $("#delete-btn").click ->
     check_count = $('.checkbox-list:checked').length;
     if check_count == 0
-      alert (I18n.t('view.error.no_check'))
+      alert (I18n.t('views.error.no_check'))
       return false
     else
-      confirm (I18n.t('view.confirm.destroy'))
+      confirm (I18n.t('views .confirm.destroy'))
 

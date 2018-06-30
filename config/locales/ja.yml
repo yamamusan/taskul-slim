@@ -251,7 +251,7 @@ ja:
     edit: 編集
     destroy: 削除
     back: 戻る
-  view:
+  views:
     confirm:
       destroy: "削除します。よろしいですか？"
     notice:
@@ -261,3 +261,16 @@ ja:
         destroy: "%{task}の削除に成功しました"
     error:
       no_check: 削除対象が一つも選択されていません 
+    pagination:
+      first: "&laquo; 最初"
+      last: "最後 &raquo;"
+      previous: "&lsaquo; 前"
+      next: "次 &rsaquo;"
+  helpers:
+    page_entries_info:
+      one_page:
+        zero: "<b>該当データがありません。</b>"
+        one: "<b>1件中 1-1 件を表示</b>"
+        display_entries: '1-%{count}件を表示中 / 合計%{count}件'
+      more_pages:
+        display_entries: '%{first}-%{last}件を表示中 / 合計%{total}件'

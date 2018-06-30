@@ -583,8 +583,93 @@ Date::DATE_FORMATS[:default] = '%Y/%m/%d'
 
 ## ページングの導入
 
-TODO!!いまここ!!!
+### kaminariの導入
 
+* Gemfileに`gem 'kaminari'`を追加して、`bundle install`
+
+### テスト用に多めのデータを投入しておく
+
+* `seeds.rb`を作成.Fakerを使って、ランダムデータを積んでみる
+
+```
+100.times do |_n|
+  title = Faker::Lorem.sentence
+  description = Faker::Lorem.paragraph
+  status = [0, 1, 2].sample
+  priority = [-1, 0, 1].sample
+  Task.create!(title: title, description: description, status: status,
+               priority: priority)
+end
+```
+
+* `buner db:seed`を実行し、１０件分のランダムデータを積む
+
+### ひとまず最低限の実装でページングを実現
+
+* コントローラに以下の処理を追加
+
+```
+  def index
+    @tasks = Task.page(params[:page])
+    # 個別にページ件数を指定したい場合は以下
+    # @tasks = Task.page(params[:page]).per(25)
+  end
+```
+* view(index.html.slim)に以下１行を追加
+* なお、一覧の上下に出したければ、２個書けばOK
+
+```
+  = paginate @tasks
+```
+
+### kaminariの全体設定を定義する
+
+* `buner g kaminari:config`でconfigファイルを生成
+* 以下のように1ページあたりの件数を20件に設定
+
+```
+Kaminari.configure do |config|
+  config.default_per_page = 20
+  # config.max_per_page = nil
+  # config.window = 4
+  # config.outer_window = 0
+  # config.left = 0
+  # config.right = 0
+  # config.page_method_name = :page
+  # config.param_name = :page
+  # config.params_on_first_page = false
+end
+```
+
+### 見た目をおしゃれにする(bootstrap4ベースで)
+
+* `buner g kaminari:views bootstrap4`でbootstrap4ベースでのおしゃれな感じにしてくれる
+
+### XX件中XX件みたいな表示をする
+
+* `= page_entries_info @tasks`を入れることで上記のような情報を出してくれる
+
+### ページング部品の日本語化
+
+* XX件中XX件とあわせて、ja.ymlに以下を追加する
+
+```
+ja:
+  views:
+    pagination:
+      first: "&laquo; 最初"
+      last: "最後 &raquo;"
+      previous: "&lsaquo; 前"
+      next: "次 &rsaquo;"
+      truncate: "&hellip;"
+  helpers:
+    page_entries_info:
+      one_page:
+        zero: "<b>該当データがありません。</b>"
+        one: "<b>1件中 1-1 件を表示</b>"
+        display_entries: '1-%{count}件を表示中 / 合計%{count}件'
+      more_pages:
+```
 
 ## コメント機能の追加(has_many)
 
