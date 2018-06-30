@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
 #
@@ -11,6 +13,10 @@ Faker::Config.locale = :ja
   description = Faker::Lorem.paragraph
   status = [0, 1, 2].sample
   priority = [-1, 0, 1].sample
-  Task.create!(title: title, description: description, status: status,
-               priority: priority)
+  t = Task.create!(title: title, description: description, status: status,
+                   priority: priority)
+
+  [1, 2, 3].sample.times do |__n|
+    t.comments.create(contents: Faker::Lorem.sentence)
+  end
 end

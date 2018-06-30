@@ -1,4 +1,6 @@
 class Task < ApplicationRecord
+  has_many :comments, dependent: :destroy
+
   attr_accessor :statuses, :priorities
 
   enum priority: { normal: 0, low: -1, high: 1 }, _prefix: true

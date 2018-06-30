@@ -682,8 +682,46 @@ data-toggle="tooltip" data-placement="top" title="Tooltip on top"
 
 ## コメント機能の追加(has_many)
 
-### 
-TODO!!いまここ!!!
+### commentモデルを追加する
+
+* まず、`buner g model comment contents:string task:references`でmigrationとmodelを作成する
+  * referencesをつけているので、task_idが外部キーとしてcommentsテーブルに追加される
+
+### has_many関連付けを指定する
+
+* taskモデルに以下を追加し、task has_many comments の関係性を定義する
+
+```
+  has_many :comments, dependent: :destroy
+```
+
+### テストデータを生成する
+
+* 以下のようにseeds.rbを修正
+
+```
+100.times do |_n|
+  title = Faker::Lorem.sentence
+  (略)
+  t = Task.create!(title: title, description: description, status: status,
+                   priority: priority)
+  [1, 2, 3].sample.times do |__n|
+    t.comments.create(contents: Faker::Lorem.sentence)
+  end
+end
+```
+
+### とりあえずコンソールで確認
+
+```
+Task.find(1).comments
+Task Load (1.7ms)  SELECT  "tasks".* FROM "tasks" WHERE "tasks"."id" = ? LIMIT ?  [["id", 1], ["LIMIT", 1]]
+Comment Load (2.0ms)  SELECT  "comments".* FROM "comments" WHERE "comments"."task_id" = ? LIMIT ?  [["task_id", 1], ["LIMIT", 11]]
+=> #<ActiveRecord::Associations::CollectionProxy [#<Comment id: 1, contents: "Minus ea deserunt quia ut sit perspiciatis laudant...", task_id: 1, created_at: "2018-06-30 13:45:31", updated_at: "2018-06-30 13:45:31">, #<Comment id: 2, contents: "Eum voluptatem cum explicabo libero eum error.", task_id: 1, created_at: "2018-06-30 13:45:31", updated_at: "2018-06-30 13:45:31">]>
+```
+
+### 画面側に表示
+
 
 ## 検索機能の追加(モーダルで実装)
 

@@ -27,12 +27,31 @@
       .col-6.col-md-4.col-xl-3.mb-4
         .card.h-100
           .card-header.taskul-color-card.text-white.text-truncate = task.title
-          = link_to image_tag("card#{(1..4).to_a.sample}.jpg", class: 'card-img-top taskul-card-img'), task
+          .taskul-card-image-frame
+            = link_to image_tag("card#{(1..4).to_a.sample}.jpg", class: 'card-img-top taskul-card-img'), task
+            button.btn.btn-link data-target="#comment-modal" data-toggle="modal" type="button" 
+              / = image_tag("fukidashi.png", class: 'taskul-comment')
+              h5
+                span.badge.badge-pill.badge-success.px-3.py-2 = task.comments.size
           .card-body
             p.card-text = task.description
           .d-flex.justify-content-center.mb-2
             .badge.badge-success.mr-2.align-bottom = task.priority
             .badge.badge-info.mr-2.align-bottom = task.status
+          #comment-modal.modal.fade aria-hidden="true" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1" 
+            .modal-dialog role="document" 
+              .modal-content
+                .modal-header
+                  h5#exampleModalLabel.modal-title コメント
+                  button.close aria-label="Close" data-dismiss="modal" type="button" 
+                    span aria-hidden="true"  ×
+                .modal-body
+                  - task.comments.each do |comment|
+                    ul
+                      li= comment.contents
+                .modal-footer
+                  button.btn.btn-secondary data-dismiss="modal" type="button"  Close
+
           .card-footer.d-flex.justify-content-center
             .mx-3 = link_to image_tag('detail.png'), task, title: "詳細", data: {toggle: 'tooltip', placement: 'bottom'}
             .mx-3 = link_to image_tag('edit.png'), edit_task_path(task), title: "編集", data: {toggle: 'tooltip', placement: 'bottom'}

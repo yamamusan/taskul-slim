@@ -34,6 +34,10 @@
   background-image: url('~images/user.png');
 }
 
+.taskul-card-image-frame {
+  position: relative;
+}
+
 .taskul-card-img {
   @extend .rounded-0;
   width: 100%;
@@ -41,7 +45,21 @@
   object-fit: cover;
 }
 
+.taskul-card-image-frame button {
+  position: absolute;
+  top: 88%;
+  left: 80%; 
+}
+
 .taskul-color-card {
   background-color: #0f5ca0;
 }
 
+.taskul-comment {
+  height: 12%;
+  width: 12%;
+}
+
+.taskul-comment-count {
+  left: -25px;
+}
