@@ -405,7 +405,6 @@ mv app/assets/stylesheets/application.css app/assets/stylesheets/application.scs
 ### 中身の画面もおしゃれにする
 
 * 一覧、登録、編集画面を整備する(ここはコミット参照)
-* ⭐️今ココ！登録と編集画面はまだ。後ででいいかな。。。
 
 ## 多言語対応をする
 
@@ -956,8 +955,6 @@ gem 'ransack'
     = select_tag 'q[s]', options_for_select(select_hash), class: 'custom-select'
 ```
 
-## カード版の一括選択削除
-
 ## turbolinksが悪さして,画面遷移後にdocument.readyが効かない問題
 
 * 以下のように記載すればOK
@@ -969,3 +966,6 @@ $(document).on 'turbolinks:load', ->
     $('.checkbox-list').prop('checked', $('#checkbox-header').prop('checked'))
 ```
 
+## カード版の一括選択削除
+
+* TODO!いまここ！
