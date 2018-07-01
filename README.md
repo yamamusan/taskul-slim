@@ -785,8 +785,91 @@ Comment Load (2.0ms)  SELECT  "comments".* FROM "comments" WHERE "comments"."tas
   edit_task_comment_path(task, comment)
 ```
 
+## N+1問題の検知と対応
+
+### 問題の状況
+* タスクの一覧を表示する際に、以下のようにタスク毎にコメント情報を取得するクエリが投げられるため効率が悪い
+* というか、タスクの一覧取得＆タスク単位でのコメントのサイズ取得＆モーダル用にコメント一覧取得するクエリが投げられている
+* タスクの数をNとすると、`[1 + 2N]`回くらい呼ばれる
+
+```
+Processing by TasksController#index as HTML
+  Rendering tasks/index.html.slim within layouts/application
+   (0.4ms)  SELECT COUNT(*) FROM (SELECT  1 AS one FROM "tasks" LIMIT ? OFFSET ?) subquery_for_count  [["LIMIT", 20], ["OFFSET", 0]]
+  ↳ app/views/tasks/index.html.slim:22
+   (0.3ms)  SELECT COUNT(*) FROM "tasks"
+  ↳ app/views/tasks/index.html.slim:22
+  Task Load (0.8ms)  SELECT  "tasks".* FROM "tasks" LIMIT ? OFFSET ?  [["LIMIT", 20], ["OFFSET", 0]]
+  ↳ app/views/tasks/index.html.slim:26
+
+   (0.3ms)  SELECT COUNT(*) FROM "comments" WHERE "comments"."task_id" = ?  [["task_id", 1]]
+  ↳ app/views/tasks/index.html.slim:35
+  Comment Load (0.3ms)  SELECT "comments".* FROM "comments" WHERE "comments"."task_id" = ?  [["task_id", 1]]
+  ↳ app/views/comments/_index.html.slim:8
+  Rendered comments/_index.html.slim (45.5ms)
+
+   (0.2ms)  SELECT COUNT(*) FROM "comments" WHERE "comments"."task_id" = ?  [["task_id", 2]]
+  ↳ app/views/tasks/index.html.slim:35
+  Comment Load (0.2ms)  SELECT "comments".* FROM "comments" WHERE "comments"."task_id" = ?  [["task_id", 2]]
+  ↳ app/views/comments/_index.html.slim:8
+  Rendered comments/_index.html.slim (28.3ms)
+```
+
+### N+1問題を検知してくれるgemを導入
+
+* `gem 'bullet'`をDevelopグループに入れて、`bundle install`
+* `config/environments/development.rb` に設定を行う。
+
+```
+  # bullet settings
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.bullet_logger = true
+    Bullet.console = true
+    Bullet.add_footer = true
+  end
+```
+* これでアプリケーションを起動してアクセスすると、ブラウザのコンソールやbullet.logに以下のような警告が刻まれる
+
+```
+GET /
+USE eager loading detected
+  Task => [:comments]
+  Add to your finder: :includes => [:comments]
+```
+
+### N+1問題を修正する
+
+* 以下のようにinclued(:モデル名)で、あらかじめ子テーブルのレコードも含めて検索しておく
+
+```
+# 修正前
+@tasks = Task.page(params[:page])
+# 修正後 
+@tasks = Task.page(params[:page]).includes(:comments)
+```
+
+* そうすると以下のようなSQLが発行されるようになり、N+1問題は解消される
+
+```
+Started GET "/?page=5" for 127.0.0.1 at 2018-07-01 15:51:48 +0900
+Processing by TasksController#index as HTML
+  Parameters: {"page"=>"5"}
+  Rendering tasks/index.html.slim within layouts/application
+   (0.2ms)  SELECT COUNT(*) FROM (SELECT  1 AS one FROM "tasks" LIMIT ? OFFSET ?) subquery_for_count  [["LIMIT", 20], ["OFFSET", 80]]
+  ↳ app/views/tasks/index.html.slim:22
+   (0.2ms)  SELECT COUNT(*) FROM "tasks"
+  ↳ app/views/tasks/index.html.slim:22
+  Task Load (0.3ms)  SELECT  "tasks".* FROM "tasks" LIMIT ? OFFSET ?  [["LIMIT", 20], ["OFFSET", 80]]
+  ↳ app/views/tasks/index.html.slim:26
+  Comment Load (2.1ms)  SELECT "comments".* FROM "comments" WHERE "comments"."task_id" IN (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?)  [["task_id", 81], ["task_id", 82], ["task_id", 83], ["task_id", 84], ["task_id", 85], ["task_id", 86], ["task_id", 87], ["task_id", 88], ["task_id", 89], ["task_id", 90], ["task_id", 91], ["task_id", 92], ["task_id", 93], ["task_id", 94], ["task_id", 95], ["task_id", 96], ["task_id", 97], ["task_id", 98], ["task_id", 99], ["task_id", 100]]
+  ↳ app/views/tasks/index.html.slim:26
+  Rendered comments/_index.html.slim (1.0ms)
+```
+
 ## 検索機能とソート順の追加(モーダルで実装)
 
+* TODO 今ここ！
 
 ## カード版の一括選択削除
 

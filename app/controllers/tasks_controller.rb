@@ -6,7 +6,7 @@ class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
   def index
-    @tasks = Task.page(params[:page])
+    @tasks = Task.page(params[:page]).includes(:comments)
   end
 
   # GET /tasks/1
