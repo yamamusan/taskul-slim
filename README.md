@@ -930,6 +930,13 @@ gem 'ransack'
       button.btn.btn-secondary data-dismiss="modal" type="button"  Close
 ```
 * これだけで、検索処理が完成！ページングジにも自動で引き継がれる
+* 子テーブルに指定した条件を満たすものだけを抽出するやり方は以下のようにやればOK
+
+```
+  .form-group
+    = f.label :contents
+    = f.search_field :comments_contents_cont, class: "form-control"
+```
  
 ### Ransackでソートを実現する
 

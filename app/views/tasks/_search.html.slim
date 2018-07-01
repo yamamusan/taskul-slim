@@ -14,6 +14,9 @@
               = f.label :description
               = f.search_field :description_cont, class: "form-control"
             .form-group
+              = f.label :contents
+              = f.search_field :comments_contents_cont, class: "form-control"
+            .form-group
               = f.label '並び順'
               / - select_hash =  [["タイトル(昇順)", "title asc"], ["タイトル(降順)", "title desc"]]
               - select_hash = []
