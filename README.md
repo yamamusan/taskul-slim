@@ -951,3 +951,14 @@ gem 'ransack'
 
 ## カード版の一括選択削除
 
+## turbolinksが悪さして,画面遷移後にdocument.readyが効かない問題
+
+* 以下のように記載すればOK
+
+```
+$(document).on 'turbolinks:load', ->
+
+  $("#checkbox-header").click ->
+    $('.checkbox-list').prop('checked', $('#checkbox-header').prop('checked'))
+```
+
