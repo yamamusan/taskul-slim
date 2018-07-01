@@ -869,9 +869,85 @@ Processing by TasksController#index as HTML
 
 ## 検索機能とソート順の追加(モーダルで実装)
 
-* TODO 今ここ！
+### 検索用のモーダルを追加
+
+* 一覧側に以下のようなコードを追加
+
+```
+.taskul-title-area.d-flex.justify-content-start.align-items-center
+  (略)
+  .ml-auto
+    button#search-detail-btn.btn.btn-secondary.m-1 data-target="#search-modal" data-toggle="modal" type="button" = t('button.search_detail') 
+
+/ 検索モーダル
+== render 'search'
+```
+
+* _search.html.slimは一旦以下のように側だけ作っておく
+
+```
+.modal.fade id="search-modal" aria-hidden="true" role="dialog" tabindex="-1" 
+  .modal-dialog role="document" 
+    .modal-content
+      .modal-header
+        h5.modal-title 詳細検索
+        button.close aria-label="Close" data-dismiss="modal" type="button" 
+          span aria-hidden="true"  ×
+      .modal-body
+        / TODO:Ransackを用いてフォームを作る
+      .modal-footer
+        button.btn.btn-secondary data-dismiss="modal" type="button"  Close
+        / TODO:Ransackの実装を考慮して検索ボタンを追加する
+```
+
+### Ransackの導入と実装
+
+* Gemfileに以下を追記し、`bundle install`
+
+```
+gem 'ransack'
+```
+* task_controllerのindexを少し修正
+
+```
+  def index
+    @q = Task.ransack(params[:q])
+    @tasks = @q.result(distinct: true).page(params[:page]).includes(:comments)
+  def
+```
+* 検索フォームを実装(xxx_contは部分一致の検索条件を意味する)
+
+```
+  = search_form_for(@q, url:tasks_path) do |f|
+    .modal-body
+        .form-group
+          = f.label :title
+          = f.search_field :title_cont, class: "form-control"
+        .form-group
+          = f.label :description
+          = f.search_field :description_cont, class: "form-control"
+    .modal-footer
+      button.btn.btn-secondary data-dismiss="modal" type="button"  Close
+```
+* これだけで、検索処理が完成！ページングジにも自動で引き継がれる
+ 
+### Ransackでソートを実現する
+
+* sort順を選択するselectboxを生成して、それに基づいてsortする 
+* view側では以下のように設定してあげる(これだけでOK!!!)
+
+```
+  .form-group
+    = f.label '並び順'
+    - select_hash = []
+    - select_hash << ["ID(昇順)", "id asc"]
+    - select_hash << ["ID(降順)", "id desc"]
+    - select_hash << ["タイトル(昇順)", "title asc"]
+    - select_hash << ["タイトル(降順)", "title desc"]
+    - select_hash << ["優先度(昇順)", "priority asc"]
+    - select_hash << ["優先度(降順)", "priority desc"]
+    = select_tag 'q[s]', options_for_select(select_hash), class: 'custom-select'
+```
 
 ## カード版の一括選択削除
-
-
 

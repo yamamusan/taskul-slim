@@ -254,6 +254,8 @@ ja:
     show: 詳細
     edit: 編集
     destroy: 削除
+    search: 検索
+    search_detail: 詳細検索
     back: 戻る
   views:
     confirm:
@@ -270,6 +272,7 @@ ja:
       last: "最後 &raquo;"
       previous: "&lsaquo; 前"
       next: "次 &rsaquo;"
+      truncate: "&hellip;"
   helpers:
     page_entries_info:
       one_page:

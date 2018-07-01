@@ -6,7 +6,10 @@ class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
   def index
-    @tasks = Task.page(params[:page]).includes(:comments)
+    @q = Task.ransack(params[:q])
+    # デフォルトソート順を設定する場合
+    # @q.sorts = 'priority desc' if @q.sorts.empty? 
+    @tasks = @q.result(distinct: true).page(params[:page]).includes(:comments)
   end
 
   # GET /tasks/1
@@ -84,8 +87,4 @@ class TasksController < ApplicationController
     params.fetch(:task, {}).permit(:title, :description, :status, :priority, :due_date)
   end
 
-  def search_params
-    # 許可する項目だけを記載する
-    params.permit(:title, :due_date, :description, statuses: [], priorities: [])
-  end
 end

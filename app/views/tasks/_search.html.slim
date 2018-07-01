@@ -1,0 +1,29 @@
+.modal.fade id="search-modal" aria-hidden="true" role="dialog" tabindex="-1" 
+  .modal-dialog role="document" 
+    .modal-content
+      .modal-header
+        h5.modal-title 詳細検索
+        button.close aria-label="Close" data-dismiss="modal" type="button" 
+          span aria-hidden="true"  ×
+      = search_form_for(@q, url:tasks_path) do |f|
+        .modal-body
+            .form-group
+              = f.label :title
+              = f.search_field :title_cont, class: "form-control"
+            .form-group
+              = f.label :description
+              = f.search_field :description_cont, class: "form-control"
+            .form-group
+              = f.label '並び順'
+              / - select_hash =  [["タイトル(昇順)", "title asc"], ["タイトル(降順)", "title desc"]]
+              - select_hash = []
+              - select_hash << ["ID(昇順)", "id asc"]
+              - select_hash << ["ID(降順)", "id desc"]
+              - select_hash << ["タイトル(昇順)", "title asc"]
+              - select_hash << ["タイトル(降順)", "title desc"]
+              - select_hash << ["優先度(昇順)", "priority asc"]
+              - select_hash << ["優先度(降順)", "priority desc"]
+              = select_tag 'q[s]', options_for_select(select_hash), class: 'custom-select'
+        .modal-footer
+          button.btn.btn-secondary data-dismiss="modal" type="button"  Close
+          = f.submit class: 'btn btn-primary m-1'

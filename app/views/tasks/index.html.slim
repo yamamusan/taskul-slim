@@ -1,38 +1,43 @@
 .row
   p.h2.col-2.mt-2 タスク
 
+/ 通知エリア
 - if flash[:notice]
   div#notice.alert.alert-success = notice
 
-= form_tag(tasks_path, method: :delete) do
+/ ボタンエリア
+.taskul-title-area.d-flex.justify-content-start.align-items-center
+  /! TODO: 反転もできるようにしたい
+  .mr-auto
+    button.btn.btn-info.btn-sm.m-1 未着手
+    button.btn.btn-warning.btn-sm.m-1 着手
+    button.btn.btn-success.btn-sm.m-1 完了
+  .ml-auto
+    button#search-detail-btn.btn.btn-secondary.m-1 data-target="#search-modal" data-toggle="modal" type="button" = t('button.search_detail') 
+    button#delete-btn.btn.btn-danger.m-1 = t('button.destroy')
+    = link_to t('button.new'), new_task_path, class: 'btn btn-primary m-1'
 
-  .taskul-title-area.d-flex.justify-content-start.align-items-center
-    /! TODO: 反転もできるようにしたい
-    .mr-auto
-      button.btn.btn-info.btn-sm.m-1 未着手
-      button.btn.btn-warning.btn-sm.m-1 着手
-      button.btn.btn-success.btn-sm.m-1 完了
-    .ml-auto
-      button.btn.btn-secondary.m-1 詳細検索
-      = submit_tag t('button.destroy'), id: 'delete-btn', class: 'btn btn-danger m-1' 
-      = link_to t('button.new'), new_task_path, class: 'btn btn-primary m-1'
-      / data属性は以下のように指定する
-      / = link_to 'New Task', new_task_path, class: 'btn btn-primary', data: {target: '#task-register',  toggle: "modal"}
+/ 検索モーダル
+== render 'search'
 
+= form_tag(tasks_path) do
+  / ページネーション
   p.text-center.mb-0.small.text-secondary = page_entries_info @tasks
   = paginate @tasks
 
+  / タスクの一覧
   .row
     - @tasks.each_with_index do |task, i|
       .col-6.col-md-4.col-xl-3.mb-4
         .card.h-100
           .card-header.taskul-color-card.text-white.text-truncate = task.title
           .taskul-card-image-frame
-            = link_to image_tag("card#{(1..4).to_a.sample}.jpg", class: 'card-img-top taskul-card-img'), task
+            = link_to image_tag("card#{(1..5).to_a.sample}.jpg", class: 'card-img-top taskul-card-img'), task
             button.btn.btn-link data-target="#comment-modal-#{task.id}" data-toggle="modal" type="button" 
               / = image_tag("fukidashi.png", class: 'taskul-comment')
               h5
                 span.badge.badge-pill.badge-success.px-3.py-2 = task.comments.size
+
           .card-body
             p.card-text = task.description
           .d-flex.justify-content-center.mb-2
@@ -49,8 +54,13 @@
             .mx-3 = link_to image_tag('edit.png'), edit_task_path(task), title: "編集", data: {toggle: 'tooltip', placement: 'bottom'}
             .mx-3 = link_to image_tag('delete.png'), task, title: "削除", data: { confirm: t('views.confirm.destroy'), toggle: 'tooltip', placement: 'bottom' }, method: :delete
 
+  / ページネーション
   p.text-center.mb-0.small.text-secondary = page_entries_info @tasks
   = paginate @tasks
+
+
+
+
 
   / ★テーブルで一覧を出力する場合
   / .table-responsive
